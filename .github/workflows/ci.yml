@@ -21,7 +21,8 @@ jobs:
         uses: snyk/actions/docker@master
         with:
           image: mercybassey/custom-nginx
-          args: --file=Dockerfile --severity-threshold=low
+          args: --file=Dockerfile
+          json: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
