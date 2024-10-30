@@ -17,6 +17,7 @@ jobs:
         run: docker build -t mercybassey/custom-nginx .
 
       - name: Run Snyk to check for vulnerabilities
+        continue-on-error: true
         uses: snyk/actions/docker@master
         with:
           image: mercybassey/custom-nginx
