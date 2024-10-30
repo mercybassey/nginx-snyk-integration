@@ -1,3 +1,36 @@
+# name: Snyk Container Scan
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   snyk:
+#     runs-on: ubuntu-24.04
+#     steps:
+
+#       - name: Check out repository
+#         uses: actions/checkout@v2
+
+#       - name: Build Docker image
+#         run: docker build -t mercybassey/custom-nginx .
+
+#       - name: Run Snyk to check for vulnerabilities
+#         continue-on-error: true
+#         uses: snyk/actions/docker@master
+#         with:
+#           image: mercybassey/custom-nginx
+#           args: --file=Dockerfile
+#           json: true
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
+
+#       - name: Upload scan results to GitHub Code Scanning
+#         uses: github/codeql-action/upload-sarif@v3
+#         with:
+#           sarif_file: snyk.sarif
+
 name: Snyk Container Scan
 
 on:
@@ -22,11 +55,18 @@ jobs:
         with:
           image: mercybassey/custom-nginx
           args: --file=Dockerfile
-          json: true
+          json: true  # Enable JSON output
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
-      - name: Upload scan results to GitHub Code Scanning
+      - name: Convert Snyk JSON to SARIF
+        uses: garethr/snyk-to-sarif@master
+        with:
+          input: snyk.json
+          output: snyk.sarif
+
+      - name: Upload SARIF file to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
+
