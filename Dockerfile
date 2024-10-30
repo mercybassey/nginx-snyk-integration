@@ -1,4 +1,4 @@
-FROM nginx:1.17.0
+FROM nginx:1.27.1-bookworm
 
 COPY index.html /usr/share/nginx/html/index.html
 
