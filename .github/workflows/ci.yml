@@ -24,3 +24,8 @@ jobs:
           args: --file=Dockerfile
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
+
+      - name: Upload scan results to GitHub Code Scanning
+        users: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
