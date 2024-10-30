@@ -1,0 +1,22 @@
+name: Snyk Container Scan
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  snyk:
+    runs-on: ubuntu-24.10
+    steps:
+
+      - name: Build Docker image
+        run: docker build -t mercybassey/custom-nginx .
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/docker@master
+        with:
+          image: mercybassey/custom-nginx
+          args: --file=Dockerfile --severity-threshold=low
+        env:
+          SNYK_AUTH_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
