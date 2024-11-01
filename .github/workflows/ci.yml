@@ -22,7 +22,7 @@ jobs:
         with:
           image: mercybassey/custom-nginx
           args: --file=Dockerfile
-          # json: true
+          json: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}
 
